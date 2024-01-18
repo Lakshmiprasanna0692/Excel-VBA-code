@@ -1,0 +1,42 @@
+Sub Split_Data()
+Dim L As Long
+    Dim DS As Worksheet
+    Dim VCL, X As Integer
+    Dim XCL As Long
+    Dim MARY As Variant
+    Dim title As String
+    Dim titlerow As Integer
+    Application.ScreenUpdating = False
+    VCL = Application.InputBox(prompt:="Which column would you like to filter by?", title:="Filter column", Type:=1)
+    Set DS = ActiveSheet
+    L = DS.Cells(DS.Rows.Count, VCL).End(xlUp).Row
+    title = "A1"
+    titlerow = DS.Range(title).Cells(1).Row
+    XCL = DS.Columns.Count
+    DS.Cells(3, XCL) = "Unique"
+    For X = 2 To L
+        On Error Resume Next
+        If DS.Cells(X, VCL) <> "" And Application.WorksheetFunction.Match(DS.Cells(X, VCL), DS.Columns(XCL), 0) = 0 Then
+            DS.Cells(DS.Rows.Count, XCL).End(xlUp).Offset(1) = DS.Cells(X, VCL)
+        End If
+    Next
+    MARY = Application.WorksheetFunction.Transpose(DS.Columns(XCL).SpecialCells(xlCellTypeConstants))
+    DS.Columns(XCL).Clear
+    For X = 2 To UBound(MARY)
+        DS.Range(title).AutoFilter Field:=VCL, Criteria1:=MARY(X) & ""
+        If Not Evaluate("=ISREF('" & MARY(X) & "'!A1)") Then
+            Sheets.Add(After:=Worksheets(Worksheets.Count)).Name = MARY(X) & ""
+        Else
+            Sheets(MARY(X) & "").Move After:=Worksheets(Worksheets.Count)
+        End If
+        DS.Range("A" & titlerow & ":A" & L).EntireRow.Copy Sheets(MARY(X) & "").Range("A4")
+    Next
+    DS.AutoFilterMode = False
+    DS.Activate
+    Application.ScreenUpdating = True
+End Sub
+
+
+
+
+
