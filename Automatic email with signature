@@ -1,0 +1,75 @@
+Sub With_HTML_Signature_With_Image()
+
+   Dim sh As Worksheet
+   Set sh = ThisWorkbook.Sheets("Send_Mails")
+    Dim i As Integer
+    Dim OlApp As Object
+    Dim NewMail As Object
+    Dim EmailBody As String
+    Dim StrSignature As String
+    Dim sPath As String
+    Dim signImageFolderName As String
+    Dim completeFolderPath As String
+    Dim strbody As String
+
+    Set OlApp = CreateObject("Outlook.Application")
+    Set NewMail = OlApp.CreateItem(0)
+
+    sPath = Environ("appdata") & "\Microsoft\Signatures\Lakshmi.htm"
+    
+    signImageFolderName = "Lakshmi_file"
+        completeFolderPath = Environ("appdata") & "\Microsoft\Signatures\" & signImageFolderName
+
+    If Dir(sPath) <> "" Then
+        StrSignature = GetSignature(sPath)
+        StrSignature = VBA.Replace(StrSignature, signImageFolderName, completeFolderPath)
+   Else
+        StrSignature = ""
+    End If
+
+    On Error Resume Next
+
+Dim last_row As Integer
+last_row = Application.CountA(sh.Range("D:D"))
+strbody = "Hi There!<br><br>" & _
+              "As discussed, We have placed the GD files on teams and given the access for your respective sites. Kindly update the file by this Friday and update the count of HC information ( HC count by HRG).<br><br>" & _
+              "Notes:<br><br>" & _
+              " •      Highlight the changes in yellow.<br>" & _
+              " •      Move terminations from active tab to termination tab ( cut and paste ) .<br>" & _
+              " •      Ensure all the fields are filled, Mark NA if any field is incomplete and not applicable.<br>" & _
+              " •      Ensure all the data is in lower case and same format .<br>" & _
+              " •      Kindly acknowledge on this mail on or before Friday once the data has been updated .<br><br>" & _
+              "Regards" & _
+              "<br><B></B>"
+
+For i = 2 To last_row
+    With NewMail
+        .To = sh.Range("E" & i).Value
+        .CC = sh.Range("F" & i).Value
+        .Subject = sh.Range("G" & i).Value
+        '.display
+        .htmlBody = strbody & "<br>" & StrSignature
+        If sh.Range("H" & i).Value <> "" Then
+        .attachments.Add sh.Range("H" & i).Value
+        End If
+        '.display
+        .send
+    End With
+    sh.Range("I" & i).Value = "Sent"
+Next i
+MsgBox "All the mails have been sent successfully"
+    On Error GoTo 0
+    Set NeMail = Nothing
+    Set OlApp = Nothing
+End Sub
+
+Function GetSignature(fPath As String) As String
+    Dim fso As Object
+    Dim TSet As Object
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    Set TSet = fso.GetFile(fPath).OpenAsTextStream(1, -2)
+    GetSignature = TSet.readall
+    TSet.Close
+End Function
+
+
