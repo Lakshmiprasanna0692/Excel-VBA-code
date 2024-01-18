@@ -1,0 +1,98 @@
+Sub FillEmptyOrHiddenWithMissing()
+    Dim ws As Worksheet
+    Dim rng As Range
+    Dim cell As Range
+    Dim exemptColumns As Variant
+    Dim isEmptyOrHidden As Boolean
+    Dim cellValue As String
+    Dim lastRow As Long, lastCol As Long, i As Long, j As Long
+    
+    ' Define the worksheet and range to check for empty or hidden cells
+   ' Check if the sheet exists
+    On Error Resume Next
+    Set ws = ThisWorkbook.Sheets("Data ") ' Replace "Sheet1" with your sheet name
+    On Error GoTo 0
+    
+    If ws Is Nothing Then
+        MsgBox "Sheet not found!", vbExclamation
+        Exit Sub
+    End If
+    
+    'Set rng = ws.Range("A1:F100") ' Modify the range as needed
+    
+    ' Define columns to exclude
+    exemptColumns = Array("Work Contact: Work Email", "Home Department Description", "FLSA Description", "Rehire Date", "Temp Agency Name", "Temp Agency Mark-Up Percentage", "Is New Incremental Hire or Replacement", "Position ID of Replacement or Enter NA if Incremental")
+    
+    ' Loop through each cell in the range and fill empty or hidden cells with "Missing" and apply red highlight
+    'For Each cell In rng
+    ' Find the last row and column with data
+    lastRow = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row
+    lastCol = ws.Cells(1, ws.Columns.Count).End(xlToLeft).Column
+    
+     ' Loop through each row
+    For l = 2 To lastRow
+        ' Check if column D contains the keyword "Temporary"
+        If InStr(1, ws.Cells(l, 6).Value, "Temporary", vbTextCompare) > 0 Then
+            ' Update column K with "Missing"
+            If ws.Cells(l, 32).Value = "" Then ' Column K is 11th column
+                ws.Cells(l, 32).Value = "Missing"
+            End If
+            
+            ' Update column L with "Missing"
+            If ws.Cells(l, 33).Value = "" Then ' Column L is 12th column
+                ws.Cells(l, 33).Value = "Missing"
+            End If
+        End If
+        
+              'Check if "Hire Date" falls in 2023 and update columns Is New Incremental Hire or Replacement and Position ID of Replacement or Enter NA if Incremental accordingly
+        If Year(ws.Cells(l, 20).Value) = 2023 And ws.Cells(l, 35).Value = "" Then   'Update column X if it's empty
+                ws.Cells(l, 35).Value = "Missing"
+            End If
+            If Year(ws.Cells(l, 20).Value) = 2023 And ws.Cells(l, 35).Value = "Replacement" And ws.Cells(l, 36).Value = "" Then 'Update column Y if it's empty
+                ws.Cells(l, 36).Value = "Missing"
+            End If
+       Next l
+
+    ' Loop through each cell in the range and fill blank cells with "Missing" and apply red highlight
+    For i = 2 To lastRow ' Assuming headers are in row 1 and data starts from row 2
+        For j = 1 To lastCol
+            Set cell = ws.Cells(i, j)
+        If Not IsInArray(cell.EntireColumn.Cells(1, 1).Value, exemptColumns) Then
+            isEmptyOrHidden = False
+            cellValue = Trim(cell.Value)
+            
+            ' Check if cell is empty or contains only spaces or hidden characters
+            If cellValue = vbNullString Then
+                isEmptyOrHidden = True
+            Else
+                Dim k As Integer
+                For k = 1 To Len(cellValue)
+                    If Asc(Mid(cellValue, k, 1)) < 32 Then ' Check for ASCII values less than 32 (non-visible characters)
+                        isEmptyOrHidden = True
+                        Exit For
+                    End If
+                Next k
+            End If
+            
+            ' Fill empty or hidden cells with "Missing" and apply red highlight
+            If isEmptyOrHidden Then
+                    cell.Value = "Missing"
+                    cell.Interior.Color = RGB(255, 0, 0) ' Red color
+            End If
+        End If
+      Next j
+    Next i
+End Sub
+
+Function IsInArray(valToBeFound As Variant, arr As Variant) As Boolean
+    ' Function to check if a value is in the array
+    Dim element As Variant
+    For Each element In arr
+        If element = valToBeFound Then
+            IsInArray = True
+            Exit Function
+        End If
+    Next element
+    IsInArray = False
+End Function
+
