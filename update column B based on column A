@@ -1,0 +1,124 @@
+Sub ApplyDirectReporting()
+    Dim ws As Worksheet
+    Dim lastRow As Long
+    Dim managerRange As Range
+    Dim cell As Range
+    
+    ' Set the worksheet (replace "Sheet1" with your actual sheet name)
+    Set ws = ThisWorkbook.Sheets("Sheet1")
+    
+    ' Find the last row with data in column J
+    lastRow = ws.Cells(ws.Rows.Count, "J").End(xlUp).Row
+    
+    ' Set the range in column J
+    Set managerRange = ws.Range("J1:J" & lastRow)
+    
+    ' Loop through each cell in the range
+    For Each cell In managerRange
+        ' Apply the logic and populate the corresponding value in column K
+	' ( 0, 5) refers to 0 as column "J" and 5 refers the consecutive column number from column J (ex col O = 5))
+        cell.Offset(0, 5).Value = GetDirectReporting(cell.Value)
+    Next cell
+End Sub
+
+Function GetDirectReporting(managerName As String) As String
+    Select Case managerName
+        Case "Gintner, Kristine": GetDirectReporting = "Struik, Eric"
+        Case "Kaminski, Jonathan": GetDirectReporting = "Stusko, Michael"
+        Case "Fowler, Roger": GetDirectReporting = "Shammy"
+        Case "Gallagher, Gerald": GetDirectReporting = "Stusko, Michael"
+        Case "Thakkar, Deepak": GetDirectReporting = "Shammy"
+        Case "Kirikera, Goutham": GetDirectReporting = "Shammy"
+        Case "McCarthy, Ryan": GetDirectReporting = "Shammy"
+        Case "Doyle, Christopher": GetDirectReporting = "Stusko, Michael"
+        Case "Pineda, Jonathan": GetDirectReporting = "Stusko, Michael"
+        Case "Bojorquez, Rubi": GetDirectReporting = "Stusko, Michael"
+        Case "Carneiro de Lima Junior, Ivan": GetDirectReporting = "Struik, Eric"
+        Case "Barraza, Nibardo": GetDirectReporting = "Stusko, Michael"
+        Case "Heed, Ila": GetDirectReporting = "Stusko, Michael"
+        Case "Borkowski, Erin": GetDirectReporting = "Stusko, Michael"
+        Case "Todd, Jeffery": GetDirectReporting = "Stusko, Michael"
+        Case "Hartstein, John": GetDirectReporting = "David"
+        Case "Sutton, Thomas": GetDirectReporting = "David"
+        Case "Callahan, Keith": GetDirectReporting = "David"
+        Case "LIEW, HAN WAY": GetDirectReporting = "David"
+        Case "Laskowski, Tana": GetDirectReporting = "David"
+        Case "Lee, Jean": GetDirectReporting = "Shammy"
+        Case "Chuang, Jerry": GetDirectReporting = "David"
+        Case "Ganchi, Paul": GetDirectReporting = "David"
+        Case "Dunn, Maggie": GetDirectReporting = "Shammy"
+        Case "Jackson, Karen": GetDirectReporting = "Shammy"
+        Case "Boisvert, Philippe": GetDirectReporting = "Shammy"
+        Case "Sanftleben, Denys": GetDirectReporting = "Stusko, Michael"
+        Case "Passanante, Chris": GetDirectReporting = "Stusko, Michael"
+        Case "Tyson, Karen": GetDirectReporting = "JJ Shives"
+        Case "Hane, Pamela": GetDirectReporting = "Stusko, Michael"
+        Case "Li, Leon": GetDirectReporting = "Stusko, Michael"
+        Case "Michaels, Paul": GetDirectReporting = "David"
+        Case "Hartman, Richard": GetDirectReporting = "David"
+        Case "Alferink, Matthew": GetDirectReporting = "Stusko, Michael"
+        Case "Clark, Cheryl": GetDirectReporting = "Stusko, Michael"
+        Case "Baez, Grisel": GetDirectReporting = "Stusko, Michael"
+        Case "Peterson, Thomas": GetDirectReporting = "David"
+        Case "Pires, Jonathan": GetDirectReporting = "David"
+        Case "Shin, Jeongsung": GetDirectReporting = "David"
+        Case "Jareonrattanawat, Peamlap": GetDirectReporting = "David"
+        Case "Kuljeakol, Krirksak": GetDirectReporting = "David"
+        Case "Vince, James": GetDirectReporting = "David"
+        Case "Liu, Patrick": GetDirectReporting = "David"
+        Case "Huang, Xudong": GetDirectReporting = "David"
+        Case "CHAN, SZE BING": GetDirectReporting = "David"
+        Case "Nguyen Thi, Thanh": GetDirectReporting = "David"
+        Case "Nguyen Quang, Loc": GetDirectReporting = "David"
+        Case "Li, Ganlin": GetDirectReporting = "David"
+        Case "Ezura, Toyokazu": GetDirectReporting = "David"
+        Case "Fujiwara, Yuko": GetDirectReporting = "David"
+        Case "Tsukada, Yasuhisa": GetDirectReporting = "David"
+        Case "Huang, Yan": GetDirectReporting = "Doug"
+        Case "Xu, Justin": GetDirectReporting = "Stusko, Michael"
+        Case "Liang, Brisk": GetDirectReporting = "David"
+        Case "Qiu, Effie": GetDirectReporting = "David"
+        Case "Gai, Jimmy": GetDirectReporting = "David"
+        Case "Cao, Hanks": GetDirectReporting = "Stusko, Michael"
+        Case "CHING, CHEE PING ELVIN": GetDirectReporting = "David"
+        Case "LEE, POH LENG PAULINE": GetDirectReporting = "David"
+        Case "Liu, Delia": GetDirectReporting = "David"
+        Case "Wu, Candy": GetDirectReporting = "David"
+        Case "Katgeri, Anand": GetDirectReporting = "David"
+        Case "Saglani, Yogesh": GetDirectReporting = "David"
+        Case "Wan, Wendy": GetDirectReporting = "David"
+        Case "Yamoto, Mira": GetDirectReporting = "Stusko, Michael"
+        Case "Li, Eric": GetDirectReporting = "David"
+        Case "VP, Sourave": GetDirectReporting = "Struik, Eric"
+        Case "Sharma, Balachander": GetDirectReporting = "Struik, Eric"
+        Case "Michalove, Daniel": GetDirectReporting = "Shammy"
+        Case "Khan, Shameem": GetDirectReporting = "Doug"
+        Case "Molter, Ty": GetDirectReporting = "Stusko, Michael"
+        Case "Tedestedt, Magnus": GetDirectReporting = "Stusko, Michael"
+        Case "Britt, Douglas": GetDirectReporting = "Doug"
+        Case "Noble, Adam": GetDirectReporting = "David"
+        Case "Greene, Ernest": GetDirectReporting = "Stusko, Michael"
+        Case "Barnes, Patrick": GetDirectReporting = "Shammy"
+        Case "Shirlow, Richard": GetDirectReporting = "David"
+        Case "Sutsko, Michael": GetDirectReporting = "Doug"
+        Case "Davidson, Ricky": GetDirectReporting = "Joop"
+        Case "Rapisarda, Marcella": GetDirectReporting = "Joop"
+        Case "Szmit, Maciej": GetDirectReporting = "Joop"
+        Case "Fedeli, Silvia": GetDirectReporting = "Joop"
+        Case "Andrén, Claes": GetDirectReporting = "Joop"
+        Case "Bachar, Shlomi": GetDirectReporting = "Joop"
+        Case "Smith, Christofer": GetDirectReporting = "Joop"
+        Case "Rujigrok, Joop": GetDirectReporting = "Stusko, Michael"
+        Case "Griesbach, Michael": GetDirectReporting = "Joop"
+        Case "JACQUET, Xavier": GetDirectReporting = "Joop"
+        Case "DIOS, Nathalie": GetDirectReporting = "Joop"
+        Case "Heineke, Svenja": GetDirectReporting = "Joop"
+        Case "Hoeger, Frank": GetDirectReporting = "Joop"
+        Case "Colicelli, Carmine": GetDirectReporting = "Joop"
+        Case "Bierewirtz, Fabian": GetDirectReporting = "Joop"
+        ' Add more cases as needed
+        Case Else: GetDirectReporting = ""
+    End Select
+End Function
+
+
