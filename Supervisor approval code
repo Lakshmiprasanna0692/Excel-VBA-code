@@ -1,0 +1,206 @@
+Sub CONVERT_SHEETRANGE_TO_EXCELWORKBOOK()
+Dim WS As Worksheet
+Dim MY_SHEET As String
+Dim strto As String
+
+
+For Each WS In Worksheets 'COLLECTION LOOP TO LOOP THROUGH EACH WORKSHEET IN WORKBOOK
+
+        WS.Select
+        MY_SHEET = ActiveSheet.Name
+        Cells.Select    'TO SELECT THE ENTIRE SHEET
+        Selection.Copy  'TO COPY THE ENTIRE SHEET NOW
+        Workbooks.Add  'ADDING NEW WORKBOOK
+        'ActiveCell.PasteSpecial xlPasteAll   'PASTING THE COPIED CONTENT IN NEW WE
+        ActiveCell.PasteSpecial Paste:=xlPasteValues
+        ActiveCell.PasteSpecial Paste:=xlPasteFormats
+        ActiveCell.Select
+        Cells.EntireColumn.AutoFit
+        ActiveWorkbook.SaveAs "D:\Test Split\ " & MY_SHEET 'SAVE THIS NEW WB IN D DRIVE
+        strto = Worksheets("Sheet1").Range("A5").Value
+        Call style
+        Call SendEmail_Example1
+        ActiveWorkbook.Close (True) 'CLOSE THE FILE NOW WITH SAVED CHANGES
+
+On Error Resume Next
+Next WS  'TO MOVE TO THE NEXT WORKBOOK
+
+End Sub
+Sub SendEmail_Example1()
+
+Dim EmailApp As Outlook.Application
+Dim Source As String
+Dim strto As String
+Dim strbody As String
+Dim A As String: A = "Dear Manager / Approver"
+Dim B As String: B = "This is a weekly reminder email to approve the timesheets submitted by the employees(only for Hourly paid)."
+Dim C As String: C = "Requesting you to approve the timesheet a, so that I can run a report after 10:30 AM EST and drop another reminder email based on the report.,"
+Dim D As String: D = "Please ignore this email if you have already approved/ your subordinates are salaried."
+Dim E As String: E = "Thank You"
+Dim G As String: G = " "
+Dim H As String: H = "Regards,"
+Dim I As String: I = "Lakshmi Prasanna,"
+Set EmailApp = New Outlook.Application
+
+Dim EmailItem As Outlook.Mailitem
+Set EmailItem = EmailApp.Createitem(olMailitem)
+
+strto = Worksheets("Sheet1").Range("A5").Value
+strbody = A & vbNewLine & B & vbNewLine & C & vbNewLine & D & vbNewLine & E & vbNewLine & F & vbNewLine & G & vbNewLine & H & vbNewLine & I
+'Debug.Print (A & vbNewLine & B & vbNewLine & C & vbNewLine & D & vbNewLine & E & vbNewLine & F)
+EmailItem.To = strto
+'EmailItem.CC = "hello@boydcorp.com"
+'EmailItem.BCC = "hhhh@boydcorp.com"
+EmailItem.Subject = "Reminder Email - Timesheet Approval"
+EmailItem.Body = strbody
+
+Source = ActiveWorkbook.FullName
+EmailItem.Attachments.Add Source
+
+EmailItem.Display
+'EmailItem.Send
+
+End Sub
+Sub style()
+'
+' style Macro
+'
+
+'
+    Range("A1:B2").Select
+    Selection.Font.Bold = True
+    With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .ThemeColor = xlThemeColorAccent6
+        .TintAndShade = 0.599993896298105
+        .PatternTintAndShade = 0
+    End With
+    Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlInsideVertical)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlInsideHorizontal)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    Range("A4:B4").Select
+    Selection.Font.Bold = True
+    With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .ThemeColor = xlThemeColorAccent6
+        .TintAndShade = 0.599993896298105
+        .PatternTintAndShade = 0
+    End With
+    Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlInsideVertical)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlInsideHorizontal)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    Range("A5").Select
+    Selection.Font.Bold = True
+    Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlInsideVertical)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlInsideHorizontal)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+End Sub
+
+
